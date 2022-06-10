@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
+const Comment = require('./commentModel')
 
 const recipeSchema = new Schema({
     name: {
@@ -40,18 +41,22 @@ const recipeSchema = new Schema({
     downvotes: {
         type: Number,
         default: 0
-    }
+    },
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment',
+        default: []
+    }]
 }, { timestamps: true })
 
-recipeSchema.pre('validate', function(next){
-    this.upvotes = 0
-    this.downvotes = 0
-    next()
+recipeSchema.virtual('totalScore').get(function () {
+    return (this.upvotes - this.downvotes)
 })
 
-// recipeSchema.pre('save', function(next){
-//     //Init comments array
-//     next()
-// })
+recipeSchema.post('findOneAndDelete', async function (doc) {
+    if (doc) {
+        await Comment.remove({ _id: { $in: doc.comments } })
+    }
+})
 
 module.exports = mongoose.model('Recipe', recipeSchema)

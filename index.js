@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const { connectDB } = require('./config/db')
 const recipeRouter = require('./routes/recipes')
+const commentRouter = require('./routes/comments')
 
 connectDB(process.env.MONGO_URI)
 
@@ -10,7 +11,9 @@ app.set('view engine', 'ejs')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
 app.use('/recipes', recipeRouter)
+app.use('/recipes/:id/comments', commentRouter)
 
 app.get('/', (req, resp) => {
     resp.render('home')
@@ -21,9 +24,9 @@ app.all('*', (req, resp, next) => {
 })
 
 app.use((err, req, resp, next) => {
-    if (!err.msg) err.msg = 'Something went wrong'
-    if (!err.code) err.code = 500
-    resp.status(err.code).render('error', { err })
+    if (!err.message) err.message = 'Something went wrong'
+    if (!err.statusCode) err.statusCode = 500
+    resp.status(err.statusCode).render('error', { err })
 })
 
 app.listen(process.env.PORT, () => {

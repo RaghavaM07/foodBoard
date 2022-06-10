@@ -1,8 +1,8 @@
 class DbError extends Error{
-    constructor(msg, code) {
-        super(msg, code) 
-        this.code = code
-        this.msg = msg
+    constructor(message, statusCode) {
+        super(message, statusCode) 
+        this.statusCode = statusCode
+        this.message = message
     }
 }
 
