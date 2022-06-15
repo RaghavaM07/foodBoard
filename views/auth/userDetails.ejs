@@ -1,0 +1,38 @@
+<h1><%= user.name %>'s Details</h1>
+<ul>
+    <li><b>Name: </b><%= user.name %></li>
+    <li><b>About: </b><%= user.bio === '' ? 'N/A' : user.bio %></li>
+    <li><b>Score: </b><%= user.totalScore %></li>
+    <li>
+        <b>Recipes:</b>
+        <ul>
+            <% user.recipes.forEach(recipe => { %>
+                <li>
+                    <a href="/recipes/<%= recipe._id %>"><%= recipe.name %></a>
+                    <span>&uparrow;<%= recipe.upvotes %></span>
+                    <span>&downarrow;<%= recipe.downvotes %></span>
+                </li>
+            <% }) %>
+        </ul>
+    </li>
+    <li>
+        <b>Likes:</b>
+        <ul>
+            <% user.upvotedRecipes.forEach(recipe => { %>
+                <li>
+                    <a href="/recipes/<%= recipe._id %>"><%= recipe.name %></a>
+                </li>
+            <% }) %>
+        </ul>
+    </li>
+    <li>
+        <b>Dislikes:</b>
+        <ul>
+            <% user.downvotedRecipes.forEach(recipe => { %>
+                <li>
+                    <a href="/recipes/<%= recipe._id %>"><%= recipe.name %></a>
+                </li>
+            <% }) %>
+        </ul>
+    </li>
+</ul>

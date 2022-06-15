@@ -1,0 +1,58 @@
+<h1><%= recipe.name %></h1>
+<% const isRecipeOwner = currentUser && String(recipe.author._id)===String(currentUser.id) %> 
+<% if (isRecipeOwner) { %>
+    <form action="/recipes/<%= recipe._id %>?_method=DELETE" method="POST">
+        <button>Delete Recipe</button>
+    </form>
+<% } %>
+
+<b>by <a href="/users/<%= recipe.author._id %>"><%= recipe.author.name %></a></b>
+<h2>Details</h2>
+<h3><%= !recipe.veg ? "Non-" : "" %>Veg</h3>
+<% const d = recipe.desc.split('\r\n') %> 
+<p>
+    <% d.forEach(element => { %>
+        <%= element %><br> 
+    <% }); %>
+</p>
+<ul>
+    <li><b>Prep Time: </b><%= recipe.prepTime %></li>
+    <li><b>Cooking Time: </b><%= recipe.cookTime %></li>
+    <li><b>Serves: </b><%= recipe.serves %></li>
+</ul>
+<h2>Scores</h2>
+<ul>
+    <li><b>&uparrow; </b><%= recipe.upvotes %></li>
+    <li><b>&downarrow; </b><%= recipe.downvotes %></li>
+    <li><b>Total </b><%= recipe.totalScore %></li>
+</ul>
+<form action="/recipes/<%=recipe._id%>/upvote" method="post">
+    <input type="submit" name="upvote" value="<%= upped?"Remove ":"" %>Upvote" />
+</form>
+<form action="/recipes/<%=recipe._id%>/downvote" method="post">
+    <input type="submit" name="downvote" value="<%= downed?"Remove ":"" %>Downvote" />
+</form>
+
+<% if (isRecipeOwner) { %>
+    <a href="/recipes/<%= recipe._id %>/edit">Edit</a>
+<% } %>
+
+<h2>Comments</h2>
+<% recipe.comments.forEach(comm => { %>
+    <div style="border: 2px solid black; width: 500px;">
+        <%= comm.body %>
+        <% if (currentUser && String(comm.author._id)===String(currentUser.id)) { %>
+            <form action="/recipes/<%= recipe._id %>/comments/<%= comm._id %>?_method=DELETE" method="POST">
+                <button>Delete</button>
+            </form>
+        <% } %>
+        <pre><%= comm.author.name %></pre>
+    </div>
+<% }) %>
+
+<h2>Leave a review</h2>
+<form action="/recipes/<%= recipe._id %>/comments" method="POST">
+    <label for="body">Enter ur comment:</label>
+    <textarea name="body" id="body" cols="30" rows="10"></textarea>
+    <button>Post</button>
+</form>

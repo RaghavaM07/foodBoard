@@ -1,9 +1,10 @@
 const express = require('express')
-const controller = require('../controllers/comments')
 const router = express.Router({ mergeParams: true })
+const controller = require('../controllers/comments')
+const middleware = require('../middleware')
 
-router.post('/', controller.makeComment)
+router.post('/', middleware.isLoggedIn, controller.makeComment)
 
-router.delete('/:cid', controller.delComment)
+router.delete('/:cid', middleware.isLoggedIn, middleware.isCommentAuthor, controller.delComment)
 
 module.exports = router

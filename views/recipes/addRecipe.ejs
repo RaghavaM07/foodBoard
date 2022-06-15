@@ -1,0 +1,28 @@
+<h1>New Recipe</h1>
+<form action="/recipes" method="post">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name">
+    <br>
+    <label for="desc">Description</label>
+    <textarea name="desc" id="desc" cols="30" rows="10"></textarea>
+    <br>
+    <label for="ingText">Ingredients</label>
+    <textarea name="ingText" id="ingText" cols="30" rows="10"></textarea>
+    <br>
+    <label for="instText">Instructions</label>
+    <textarea name="instText" id="instText" cols="30" rows="10"></textarea>
+    <br>
+    <label for="isVeg">Is this Vegetarian?</label>
+    <input type="checkbox" name="isVeg" id="isVeg">
+    <br>
+    <label for="prepTime">Prep Time in mins</label>
+    <input type="number" name="prepTime" id="prepTime">
+    <br>
+    <label for="cookTime">Cook Time in mins</label>
+    <input type="number" name="cookTime" id="cookTime">
+    <br>
+    <label for="serves">Serves</label>
+    <input type="number" name="serves" id="serves">
+    <br>
+    <button>Submit</button>
+</form>

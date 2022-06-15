@@ -11,6 +11,11 @@ const recipeSchema = new Schema({
         type: String,
         required: true
     },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     prepTime: {
         type: Number,
         required: true
@@ -32,7 +37,8 @@ const recipeSchema = new Schema({
         required: true
     },
     veg: {
-        type: Boolean
+        type: Boolean,
+        required: [true, 'Please specify veg/non-veg']
     },
     upvotes: {
         type: Number,

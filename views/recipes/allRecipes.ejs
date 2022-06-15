@@ -1,0 +1,8 @@
+<h1>All Recipes</h1>
+<% recipes.forEach(recipe => { %>
+    <div style="border: 2px solid black;">
+        <h3><a href="/recipes/<%= recipe._id %>"><%= recipe.name %></a></h3>
+        <p><%= recipe.desc %></p>
+        <span>&uparrow;<%= recipe.upvotes %>&downarrow;<%= recipe.downvotes %></span>
+    </div>
+<% }) %>

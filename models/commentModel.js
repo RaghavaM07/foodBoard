@@ -5,6 +5,11 @@ const commentSchema = new Schema({
     body: {
         type: String,
         required: [true, 'Comment can\'t be empty!']
+    },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 }, { timestamps: true })
 

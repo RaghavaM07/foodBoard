@@ -1,15 +1,24 @@
 const express = require('express')
 const router = express.Router()
 const rcpController = require('../controllers/recipes')
+const middleware = require('../middleware')
 
 router.get('/', rcpController.getRecipes)
 
+router.get('/new', middleware.isLoggedIn, (req, resp) => {
+    resp.render('recipes/addRecipe')
+})
+
 router.get('/:id', rcpController.getRecipe)
+router.get('/:id/edit', middleware.isLoggedIn, middleware.isRecipeAuthor, rcpController.updPage)
 
-router.post('/', rcpController.makeRecipe)
+router.post('/', middleware.isLoggedIn, rcpController.makeRecipe)
 
-router.put('/:id', rcpController.editRecipe)
+router.post('/:id/upvote', middleware.isLoggedIn, rcpController.upvote)
+router.post('/:id/downvote', middleware.isLoggedIn, rcpController.downvote)
 
-router.delete('/:id', rcpController.delRecipe)
+router.put('/:id', middleware.isLoggedIn, middleware.isRecipeAuthor, rcpController.editRecipe)
+
+router.delete('/:id', middleware.isLoggedIn, middleware.isRecipeAuthor, rcpController.delRecipe)
 
 module.exports = router;

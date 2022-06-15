@@ -1,0 +1,36 @@
+<h1>Edit Recipe</h1>
+<form action="/recipes/<%= recipe._id %>?_method=PUT" method="POST">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" value="<%= recipe.name %>">
+    <br>
+    <label for="desc">Description</label>
+    <textarea name="desc" id="desc" cols="30" rows="10"><%= recipe.desc %></textarea>
+    <br>
+    <label for="ingText">Ingredients</label>
+    <textarea name="ingText" id="ingText" cols="30" rows="10">
+        <% recipe.ingredients.forEach(element => { %>
+            =<%= (element+'\r\n').trim() %> 
+        <% }) %>
+    </textarea>
+    <br>
+    <label for="instText">Instructions</label>
+    <textarea name="instText" id="instText" cols="30" rows="10">
+        <% recipe.instructions.forEach(element => { %>
+            =<%= (element+'\r\n').trim() %> 
+        <% }) %>
+    </textarea>
+    <br>
+    <label for="isVeg">Is this Vegetarian?</label>
+    <input type="checkbox" name="isVeg" id="isVeg" <%= recipe.veg ? 'checked' : '' %> >
+    <br>
+    <label for="prepTime">Prep Time in mins</label>
+    <input type="number" name="prepTime" id="prepTime" value="<%= recipe.prepTime %>">
+    <br>
+    <label for="cookTime">Cook Time in mins</label>
+    <input type="number" name="cookTime" id="cookTime" value="<%= recipe.cookTime %>">
+    <br>
+    <label for="serves">Serves</label>
+    <input type="number" name="serves" id="serves" value="<%= recipe.serves %>">
+    <br>
+    <button>Update</button>
+</form>
