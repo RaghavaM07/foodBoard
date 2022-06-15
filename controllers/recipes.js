@@ -112,13 +112,16 @@ module.exports.upvote = catchAsync(async (req, resp, next) => {
     const downed = u.downvotedRecipes.indexOf(req.params.id) >= 0
     if (upped) {
         r.upvotes -= 1
+        r.upvotedBy.splice(r.upvotedBy.indexOf(req.user.id), 1);
         aut.upvotesRec -= 1
         await User.findByIdAndUpdate(req.user.id, { $pull: { upvotedRecipes: r._id } })
     }
     else if (downed) {
         r.upvotes += 1
+        r.upvotedBy.push(req.user.id);
         aut.upvotesRec += 1
         r.downvotes -= 1
+        r.downvotedBy.splice(r.downvotedBy.indexOf(req.user.id), 1);
         aut.downvotesRec -= 1
         await User.findByIdAndUpdate(req.user.id, {
             $pull: { downvotedRecipes: r._id },
@@ -127,6 +130,7 @@ module.exports.upvote = catchAsync(async (req, resp, next) => {
     }
     else {
         r.upvotes += 1
+        r.upvotedBy.push(req.user.id);
         aut.upvotesRec += 1
         await User.findByIdAndUpdate(req.user.id, { $push: { upvotedRecipes: r._id } })
     }
@@ -145,13 +149,16 @@ module.exports.downvote = catchAsync(async (req, resp, next) => {
     const downed = u.downvotedRecipes.indexOf(req.params.id) >= 0
     if (downed) {
         r.downvotes -= 1
+        r.downvotedBy.splice(r.downvotedBy.indexOf(req.user.id), 1);
         aut.downvotesRec -= 1
         await User.findByIdAndUpdate(req.user.id, { $pull: { downvotedRecipes: r._id } })
     }
     else if (upped) {
         r.downvotes += 1
+        r.downvotedBy.push(req.user.id);
         aut.downvotesRec += 1
         r.upvotes -= 1
+        r.upvotedBy.splice(r.upvotedBy.indexOf(req.user.id), 1);
         aut.upvotesRec -= 1
         await User.findByIdAndUpdate(req.user.id, {
             $push: { downvotedRecipes: r._id },
@@ -160,6 +167,7 @@ module.exports.downvote = catchAsync(async (req, resp, next) => {
     }
     else {
         r.downvotes += 1
+        r.downvotedBy.push(req.user.id);
         aut.downvotesRec += 1
         await User.findByIdAndUpdate(req.user.id, { $push: { downvotedRecipes: r._id } })
     }

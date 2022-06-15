@@ -7,7 +7,8 @@ const DbError = require('../utils/DbError')
 module.exports.regUser = catchAsync(async (req, resp) => {
     const { name, email, password, bio } = req.body
     const hp = await bcrypt.hash(password, 12)
-    const u = new User({ name, email, password: hp, bio })
+    const em = email.toLowerCase()
+    const u = new User({ name, email: em, password: hp, bio })
     await u.save()
     req.flash('success', 'Account created plz login to continue')
     resp.redirect('/users/login')
