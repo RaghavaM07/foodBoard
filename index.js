@@ -6,6 +6,7 @@ const flash = require('connect-flash')
 const passport = require('passport')
 require('./config/passportConfig')(passport)
 const methodOverride = require('method-override')
+const MongoStore = require('connect-mongo')
 
 const { connectDB } = require('./config/db')
 const DbError = require('./utils/DbError')
@@ -14,7 +15,7 @@ const recipeRouter = require('./routes/recipes')
 const commentRouter = require('./routes/comments')
 const authRouter = require('./routes/auth')
 
-connectDB(process.env.MONGO_URI)
+const dbConnection = connectDB(process.env.MONGO_URI)
 
 app.set('view engine', 'ejs')
 
@@ -22,6 +23,10 @@ app.use(methodOverride('_method'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+const options = {
+    mongoUrl: process.env.MONGO_URI,
+    client: dbConnection
+}
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: true,
@@ -29,7 +34,8 @@ app.use(session({
     cookie: {
         expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge: 7 * 24 * 60 * 60 * 1000
-    }
+    },
+    store: MongoStore.create(options)
 }))
 
 app.use(passport.initialize())
