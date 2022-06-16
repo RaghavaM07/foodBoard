@@ -29,7 +29,12 @@ module.exports.getUser = catchAsync(async (req, resp, next) => {
             "upvotes": 1,
             "downvotes": 1
         })
-        // .populate('comments', { "body": 1 })
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'commentedOn'
+            }
+        })
         .populate('upvotedRecipes', { "_id": 1, "name": 1 })
         .populate('downvotedRecipes', { "_id": 1, "name": 1 })
     if (!u) {

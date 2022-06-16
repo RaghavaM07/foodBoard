@@ -35,4 +35,15 @@
             <% }) %>
         </ul>
     </li>
+    <li>
+        <b>Comments:</b>
+        <ul>
+            <% user.comments.forEach(comm => { %>
+                <li>
+                    <a href="/recipes/<%= comm.commentedOn._id %>"><%= comm.commentedOn.name %></a><br>
+                    <i><%= comm.body %></i>
+                </li>
+            <% }) %>
+        </ul>
+    </li>
 </ul>

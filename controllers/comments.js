@@ -6,8 +6,7 @@ const catchAsync = require('../utils/catchAsync')
 module.exports.makeComment = catchAsync(async (req, resp) => {
     const u = await User.findById(req.user.id)
     const { body } = req.body
-    const com = new Comment({ body })
-    com.author = req.user.id
+    const com = new Comment({ body, author: req.user.id, commentedOn: req.params.id })
     u.comments.push(com._id)
     const rec = await Recipe.findById(req.params.id)
     rec.comments.push(com)

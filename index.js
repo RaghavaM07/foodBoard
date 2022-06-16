@@ -9,7 +9,6 @@ const methodOverride = require('method-override')
 
 const { connectDB } = require('./config/db')
 const DbError = require('./utils/DbError')
-const middleware = require('./middleware')
 
 const recipeRouter = require('./routes/recipes')
 const commentRouter = require('./routes/comments')
