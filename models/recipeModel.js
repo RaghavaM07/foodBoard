@@ -45,7 +45,7 @@ const recipeSchema = new Schema({
         type: Number,
         default: 0
     },
-    downvotes: {
+    totalScore: {
         type: Number,
         default: 0
     },
@@ -66,8 +66,8 @@ const recipeSchema = new Schema({
     }]
 }, { timestamps: true })
 
-recipeSchema.virtual('totalScore').get(function () {
-    return (this.upvotes - this.downvotes)
+recipeSchema.virtual('downvotes').get(function () {
+    return (this.upvotes - this.totalScore)
 })
 
 recipeSchema.post('findOneAndDelete', async function (doc) {
@@ -75,18 +75,5 @@ recipeSchema.post('findOneAndDelete', async function (doc) {
         await Comment.remove({ _id: { $in: doc.comments } })
     }
 })
-
-recipeSchema.methods.upvote = async function (user) {
-    this.upvotes += 1
-    const aut = await User.findById(this.author)
-    aut.upvotesRec += 1;
-    await aut.save()
-    const recId = this._id
-    this.upvotedBy.push(user.id)
-    const ind = this.downvotedBy.indexOf(user.id)
-    if (ind >= 0) this.downvotedBy.splice(ind, 1)
-    await User.findByIdAndUpdate(user.id, { $push: { upvotedRecipes: recId } })
-    await this.save()
-}
 
 module.exports = mongoose.model('Recipe', recipeSchema)

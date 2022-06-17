@@ -10,10 +10,10 @@ module.exports.getRecipes = catchAsync(async (req, resp) => {
         "desc": 1,
         "_id": 1,
         "upvotes": 1,
-        "downvotes": 1,
+        "totalScore": 1,
         "author": 1
     }
-    const r = await Recipe.find({}, selectingFields).sort({ upvotes: -1 }).limit(50)
+    const r = await Recipe.find({}, selectingFields).sort({ totalScore: -1 }).limit(50)
     resp.render('recipes/allRecipes', { recipes: r })
 })
 
@@ -112,6 +112,7 @@ module.exports.upvote = catchAsync(async (req, resp, next) => {
     const downed = u.downvotedRecipes.indexOf(req.params.id) >= 0
     if (upped) {
         r.upvotes -= 1
+        r.totalScore -= 1
         r.upvotedBy.splice(r.upvotedBy.indexOf(req.user.id), 1);
         aut.upvotesRec -= 1
         await User.findByIdAndUpdate(req.user.id, { $pull: { upvotedRecipes: r._id } })
@@ -120,7 +121,7 @@ module.exports.upvote = catchAsync(async (req, resp, next) => {
         r.upvotes += 1
         r.upvotedBy.push(req.user.id);
         aut.upvotesRec += 1
-        r.downvotes -= 1
+        r.totalScore += 2
         r.downvotedBy.splice(r.downvotedBy.indexOf(req.user.id), 1);
         aut.downvotesRec -= 1
         await User.findByIdAndUpdate(req.user.id, {
@@ -130,6 +131,7 @@ module.exports.upvote = catchAsync(async (req, resp, next) => {
     }
     else {
         r.upvotes += 1
+        r.totalScore += 1
         r.upvotedBy.push(req.user.id);
         aut.upvotesRec += 1
         await User.findByIdAndUpdate(req.user.id, { $push: { upvotedRecipes: r._id } })
@@ -148,16 +150,16 @@ module.exports.downvote = catchAsync(async (req, resp, next) => {
     const upped = u.upvotedRecipes.indexOf(req.params.id) >= 0
     const downed = u.downvotedRecipes.indexOf(req.params.id) >= 0
     if (downed) {
-        r.downvotes -= 1
+        r.totalScore += 1
         r.downvotedBy.splice(r.downvotedBy.indexOf(req.user.id), 1);
         aut.downvotesRec -= 1
         await User.findByIdAndUpdate(req.user.id, { $pull: { downvotedRecipes: r._id } })
     }
     else if (upped) {
-        r.downvotes += 1
         r.downvotedBy.push(req.user.id);
         aut.downvotesRec += 1
         r.upvotes -= 1
+        r.totalScore -= 2
         r.upvotedBy.splice(r.upvotedBy.indexOf(req.user.id), 1);
         aut.upvotesRec -= 1
         await User.findByIdAndUpdate(req.user.id, {
@@ -166,7 +168,7 @@ module.exports.downvote = catchAsync(async (req, resp, next) => {
         })
     }
     else {
-        r.downvotes += 1
+        r.totalScore -= 1
         r.downvotedBy.push(req.user.id);
         aut.downvotesRec += 1
         await User.findByIdAndUpdate(req.user.id, { $push: { downvotedRecipes: r._id } })
