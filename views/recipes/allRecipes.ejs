@@ -9,7 +9,8 @@
                     <div class="col s12 m4">
                         <div class="card medium">
                             <div class="card-image waves-effect waves-block waves-light">
-                                <!-- <img class="activator" src="img/food1.jpg"> -->
+                                <% let recImg = recipe.imgUrl || '/img/NoPic.jpg' %>
+                                <img class="activator" src=<%= recImg %>>
                             </div>
                             <div class="card-content">
                                 <span class="card-title activator grey-text text-darken-4">

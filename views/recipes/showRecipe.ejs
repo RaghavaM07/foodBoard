@@ -4,7 +4,7 @@
     <div class="container">
         <span>
             <span><h2 class="recipe-headings" style="margin-bottom: 0;"><%= recipe.name %></h2></span>
-            <span><h5 class="recipe-headings"><%= recipe.author.name %></h5></span>
+            <span><a href="/users/<%= recipe.author._id %>" style="color: black;"><h5 class="recipe-headings"><%= recipe.author.name %></h5></a></span>
             <h5 class="recipe-headings">
                 <i class="material-icons">thumb_up</i>
                 <%= recipe.upvotes %>
@@ -26,7 +26,8 @@
             <% } %>
         </span>
         <div class="row recipe-top">
-            <div class="col m6 s12 img-box" style="background-image: url('https://picsum.photos/800');"></div>
+            <% const recImg = recipe.imgUrl || '/img/NoPic.jpg' %> 
+            <div class="col m6 s12 img-box" style="background-image: url(<%=recImg%>);"></div>
             <div class="col m6 s12 desc">
                 <div class="row desc-text">
                     <% const d = recipe.desc.split('\r\n') %>

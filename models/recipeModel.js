@@ -63,7 +63,15 @@ const recipeSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Comment',
         default: []
-    }]
+    }],
+    imgUrl: {
+        type: String,
+        default: undefined
+    },
+    imgPubId: {
+        type: String,
+        default: undefined
+    }
 }, { timestamps: true })
 
 recipeSchema.virtual('downvotes').get(function () {

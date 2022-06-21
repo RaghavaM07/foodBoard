@@ -3,6 +3,7 @@ const User = require('../models/userModel')
 const Comment = require('../models/commentModel')
 const catchAsync = require('../utils/catchAsync')
 const DbError = require('../utils/DbError')
+const cloudinary = require('../utils/cloudinary')
 
 module.exports.getRecipes = catchAsync(async (req, resp) => {
     const selectingFields = {
@@ -11,13 +12,18 @@ module.exports.getRecipes = catchAsync(async (req, resp) => {
         "_id": 1,
         "upvotes": 1,
         "totalScore": 1,
-        "author": 1
+        "author": 1,
+        "imgUrl": 1
     }
     const r = await Recipe.find({}, selectingFields).sort({ totalScore: -1 }).limit(50)
     resp.render('recipes/allRecipes', { recipes: r })
 })
 
 module.exports.makeRecipe = catchAsync(async (req, resp) => {
+    let imgUploadRes = { secure_url: undefined, public_id: undefined }
+    if (req.file) {
+        imgUploadRes = await cloudinary.uploader.upload(req.file.path);
+    }
     const { name, desc, prepTime, cookTime, serves, ingText, instText, isVeg } = req.body
     let veg = true
     if (!isVeg) veg = false
@@ -36,6 +42,8 @@ module.exports.makeRecipe = catchAsync(async (req, resp) => {
     instructions = instructions.filter(ins => (ins !== ''))
     const r = new Recipe({ name, desc, prepTime, cookTime, serves, ingredients, instructions, veg })
     r.author = req.user.id
+    r.imgUrl = imgUploadRes.secure_url
+    r.imgPubId = imgUploadRes.public_id
     await r.save()
     const u = await User.findById(req.user.id)
     u.recipes.push(r._id)
@@ -45,6 +53,7 @@ module.exports.makeRecipe = catchAsync(async (req, resp) => {
 
 module.exports.editRecipe = catchAsync(async (req, resp, next) => {
     const { name, desc, prepTime, cookTime, serves, ingText, instText, isVeg } = req.body
+    
     let veg = true
     if (!isVeg) veg = false
     let ingredients = [], instructions = []
@@ -60,6 +69,14 @@ module.exports.editRecipe = catchAsync(async (req, resp, next) => {
         instructions.push(...t)
     })
     instructions = instructions.filter(ins => (ins !== '' && ins.trim()))
+    const r = await Recipe.findById(req.params.id) 
+    if (req.file) {
+        await cloudinary.uploader.destroy(r.imgPubId)
+        const imgUploadRes = await cloudinary.uploader.upload(req.file.path)
+        r.imgUrl = imgUploadRes.secure_url
+        r.imgPubId = imgUploadRes.public_id
+        await r.save()
+    }
     await Recipe.findByIdAndUpdate(req.params.id, { name, desc, prepTime, cookTime, serves, ingredients, instructions, veg })
     resp.redirect(`/recipes/${req.params.id}`)
 })
@@ -78,6 +95,9 @@ module.exports.delRecipe = catchAsync(async (req, resp, next) => {
         await User.findByIdAndUpdate(comm.author, { $pull: { comments: comm._id } })
         await Comment.findByIdAndDelete(comm._id)
     })
+    if (r.imgPubId) {
+        await cloudinary.uploader.destroy(r.imgPubId)
+    }
     await Recipe.findByIdAndDelete(req.params.id)
     resp.redirect('/recipes')
 })

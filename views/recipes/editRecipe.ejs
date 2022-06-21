@@ -3,7 +3,7 @@
 <main>
     <div class="container row">
         <h1 class="recipe-headings">Edit Recipe</h1>
-        <form class="col s12" action="/recipes/<%= recipe._id %>?_method=PUT" method="POST">
+        <form class="col s12" action="/recipes/<%= recipe._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
           <div class="row">
             <div class="input-field col s12">
               <input id="name" name="name" type="text" class="validate" value="<%= recipe.name %>">
@@ -43,14 +43,27 @@
             </div>
         </div>
         <div class="row">
+          <div class="col s6">
             <div class="switch">
                 <label>
                   Non-Veg
-                  <input type="checkbox" name="isVeg" <%= recipe.veg ? 'checked' : '' %> >
+                  <input type="checkbox" name="isVeg">
                   <span class="lever"></span>
                   Veg
                 </label>
               </div>
+          </div>
+            <div class="col s6">
+              <div class="file-field input-field">
+                <div class="btn">
+                  <span>Select</span>
+                  <input type="file" name="image">
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text" placeholder="Upload an image of the recipe">
+                </div>
+              </div>
+            </div>
         </div>
         <div class='row'>
             <button type='submit' class='col btn waves-effect indigo'>Submit</button>
