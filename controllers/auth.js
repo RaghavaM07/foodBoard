@@ -27,7 +27,7 @@ module.exports.getUser = catchAsync(async (req, resp, next) => {
             "_id": 1,
             "name": 1,
             "upvotes": 1,
-            "downvotes": 1
+            "totalScore": 1
         })
         .populate({
             path: 'comments',

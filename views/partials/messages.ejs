@@ -1,11 +1,17 @@
-<% if(success && success.length!=0){ %>
-    <div>
-        [+] <%= success %>
-    </div>
+<% if(success && success.length!=0){ %>    
+    <ul class="collapsible">
+        <li>
+          <div class="collapsible-header"><i class="material-icons" style="color: green;">done</i>Success!</div>
+          <div class="collapsible-body"><span><%= success %></span></div>
+        </li>
+    </ul>
 <% } %>
 
 <% if(error && error.length!=0){ %>
-    <div>
-        [-] <%= error %>
-    </div>
+    <ul class="collapsible">
+        <li>
+          <div class="collapsible-header"><i class="material-icons" style="color: red;">error</i>Error!</div>
+          <div class="collapsible-body"><span><%= error %></span></div>
+        </li>
+    </ul>
 <% } %>

@@ -1,8 +1,33 @@
-<h1>All Recipes</h1>
-<% recipes.forEach(recipe => { %>
-    <div style="border: 2px solid black;">
-        <h3><a href="/recipes/<%= recipe._id %>"><%= recipe.name %></a></h3>
-        <p><%= recipe.desc %></p>
-        <span>&uparrow;<%= recipe.upvotes %>&downarrow;<%= recipe.downvotes %></span>
-    </div>
-<% }) %>
+<% layout('boilerplate')%>
+    <main>
+        <div class="container">
+            <div id="heading" class="row">
+                <h3 class="top-heading">Top Recipes <i class="material-icons small">local_dining</i></h3>
+            </div>
+            <div class="row">
+                <% recipes.forEach(recipe=> { %>
+                    <div class="col s12 m4">
+                        <div class="card medium">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <!-- <img class="activator" src="img/food1.jpg"> -->
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">
+                                    <%= recipe.name %> (&uparrow;<%= recipe.upvotes %>&downarrow;<%= recipe.downvotes %>)<i class="material-icons right">more_vert</i>
+                                </span>
+                                <p><a href="/recipes/<%= recipe._id %>">Cook this!</a></p>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4">
+                                    <%= recipe.name %><i class="material-icons right">close</i>
+                                </span>
+                                <p class="truncate">
+                                    <%= recipe.desc %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+    </main>

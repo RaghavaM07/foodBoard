@@ -1,36 +1,60 @@
-<h1>Edit Recipe</h1>
-<form action="/recipes/<%= recipe._id %>?_method=PUT" method="POST">
-    <label for="name">Name</label>
-    <input type="text" id="name" name="name" value="<%= recipe.name %>">
-    <br>
-    <label for="desc">Description</label>
-    <textarea name="desc" id="desc" cols="30" rows="10"><%= recipe.desc %></textarea>
-    <br>
-    <label for="ingText">Ingredients</label>
-    <textarea name="ingText" id="ingText" cols="30" rows="10">
-        <% recipe.ingredients.forEach(element => { %>
-            =<%= (element+'\r\n').trim() %> 
-        <% }) %>
-    </textarea>
-    <br>
-    <label for="instText">Instructions</label>
-    <textarea name="instText" id="instText" cols="30" rows="10">
-        <% recipe.instructions.forEach(element => { %>
-            =<%= (element+'\r\n').trim() %> 
-        <% }) %>
-    </textarea>
-    <br>
-    <label for="isVeg">Is this Vegetarian?</label>
-    <input type="checkbox" name="isVeg" id="isVeg" <%= recipe.veg ? 'checked' : '' %> >
-    <br>
-    <label for="prepTime">Prep Time in mins</label>
-    <input type="number" name="prepTime" id="prepTime" value="<%= recipe.prepTime %>">
-    <br>
-    <label for="cookTime">Cook Time in mins</label>
-    <input type="number" name="cookTime" id="cookTime" value="<%= recipe.cookTime %>">
-    <br>
-    <label for="serves">Serves</label>
-    <input type="number" name="serves" id="serves" value="<%= recipe.serves %>">
-    <br>
-    <button>Update</button>
-</form>
+<% layout('boilerplate')%>
+
+<main>
+    <div class="container row">
+        <h1 class="recipe-headings">Edit Recipe</h1>
+        <form class="col s12" action="/recipes/<%= recipe._id %>?_method=PUT" method="POST">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="name" name="name" type="text" class="validate" value="<%= recipe.name %>">
+              <label for="name">Recipe Name</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+                <textarea id="desc" name="desc" class="materialize-textarea"><%= recipe.desc %></textarea>
+                <label for="desc">Recipe Description</label>
+              </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+                <textarea id="ingText" name="ingText" class="materialize-textarea"><% recipe.ingredients.forEach(element=>{%>=<%=(element).trim()+'\r\n'%><%})%></textarea>
+                <label for="ingText">Recipe Ingredients (start each ingredient with a '=')</label>
+              </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+                <textarea id="instText" name="instText" class="materialize-textarea"><% recipe.instructions.forEach(element=>{%>=<%=(element).trim()+'\r\n'%><% })%></textarea>
+                <label for="instText">Recipe Instructions (start each instruction with a '=')</label>
+              </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12 m4">
+                <input id="prepTime" name="prepTime" type="number" class="validate" min="1" value="<%= recipe.prepTime %>">
+                <label for="prepTime">Preparation Time (in mins.)</label>
+            </div>
+            <div class="input-field col s12 m4">
+                <input id="cookTime" name="cookTime" type="number" class="validate" min="1" value="<%= recipe.cookTime %>">
+                <label for="cookTime">Cooking Time (in mins.)</label>
+            </div>
+            <div class="input-field col s12 m2">
+                <input id="serves" name="serves" type="number" class="validate" min="1" value="<%= recipe.serves %>">
+                <label for="serves">Serves</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="switch">
+                <label>
+                  Non-Veg
+                  <input type="checkbox" name="isVeg" <%= recipe.veg ? 'checked' : '' %> >
+                  <span class="lever"></span>
+                  Veg
+                </label>
+              </div>
+        </div>
+        <div class='row'>
+            <button type='submit' class='col btn waves-effect indigo'>Submit</button>
+        </div>
+        </form>
+      </div>
+</main>

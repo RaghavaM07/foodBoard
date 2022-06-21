@@ -7,6 +7,7 @@ const passport = require('passport')
 require('./config/passportConfig')(passport)
 const methodOverride = require('method-override')
 const MongoStore = require('connect-mongo')
+const engine = require('ejs-mate')
 
 const { connectDB } = require('./config/db')
 const DbError = require('./utils/DbError')
@@ -17,6 +18,8 @@ const authRouter = require('./routes/auth')
 
 const dbConnection = connectDB(process.env.MONGO_URI)
 
+app.engine('ejs', engine)
+app.use(express.static('public'))
 app.set('view engine', 'ejs')
 
 app.use(methodOverride('_method'))

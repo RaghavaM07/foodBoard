@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Recipes | FoodBoard</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/materialize.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="/js/materialize.js"></script>
+    <script src="/js/common.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="/recipes" class="brand-logo logo">FoodBoard</a>
+                <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <% if (!currentUser) { %>
+                        <li><a href="/users/login">Login</a></li>
+                        <li><a href="/users/register">Register</a></li>
+                    <% } %>
+                    <% if (currentUser) { %>
+                        <li><a href="/users/logout">Logout</a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </nav>
+        <ul class="sidenav" id="mobile-menu">
+            <% if (!currentUser) { %>
+                <li><a href="/users/login">Login</a></li>
+                <li><a href="/users/register">Register</a></li>
+            <% } %>
+            <% if (currentUser) { %>
+                <li><a href="/users/logout">Logout</a></li>
+            <% } %>
+        </ul>
+    </header>
+    <%- body %>
+    <footer class="page-footer #00acc1 cyan lighten-1 center-align">
+            &copy; 2022 FoodBoard
+    </footer>
+</body>
+</html>

@@ -1,28 +1,60 @@
-<h1>New Recipe</h1>
-<form action="/recipes" method="post">
-    <label for="name">Name</label>
-    <input type="text" id="name" name="name">
-    <br>
-    <label for="desc">Description</label>
-    <textarea name="desc" id="desc" cols="30" rows="10"></textarea>
-    <br>
-    <label for="ingText">Ingredients</label>
-    <textarea name="ingText" id="ingText" cols="30" rows="10"></textarea>
-    <br>
-    <label for="instText">Instructions</label>
-    <textarea name="instText" id="instText" cols="30" rows="10"></textarea>
-    <br>
-    <label for="isVeg">Is this Vegetarian?</label>
-    <input type="checkbox" name="isVeg" id="isVeg">
-    <br>
-    <label for="prepTime">Prep Time in mins</label>
-    <input type="number" name="prepTime" id="prepTime">
-    <br>
-    <label for="cookTime">Cook Time in mins</label>
-    <input type="number" name="cookTime" id="cookTime">
-    <br>
-    <label for="serves">Serves</label>
-    <input type="number" name="serves" id="serves">
-    <br>
-    <button>Submit</button>
-</form>
+<% layout('boilerplate')%>
+
+<main>
+    <div class="container row">
+        <h1 class="recipe-headings">New Recipe</h1>
+        <form class="col s12" action="/recipes" method="POST">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="name" name="name" type="text" class="validate">
+              <label for="name">Recipe Name</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+                <textarea id="desc" name="desc" class="materialize-textarea"></textarea>
+                <label for="desc">Recipe Description</label>
+              </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+                <textarea id="ingText" name="ingText" class="materialize-textarea"></textarea>
+                <label for="ingText">Recipe Ingredients (start each ingredient with a '=')</label>
+              </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+                <textarea id="instText" name="instText" class="materialize-textarea"></textarea>
+                <label for="instText">Recipe Instructions (start each instruction with a '=')</label>
+              </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12 m4">
+                <input id="prepTime" name="prepTime" type="number" class="validate" min="1">
+                <label for="prepTime">Preparation Time (in mins.)</label>
+            </div>
+            <div class="input-field col s12 m4">
+                <input id="cookTime" name="cookTime" type="number" class="validate" min="1">
+                <label for="cookTime">Cooking Time (in mins.)</label>
+            </div>
+            <div class="input-field col s12 m2">
+                <input id="serves" name="serves" type="number" class="validate" min="1">
+                <label for="serves">Serves</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="switch">
+                <label>
+                  Non-Veg
+                  <input type="checkbox" name="isVeg">
+                  <span class="lever"></span>
+                  Veg
+                </label>
+              </div>
+        </div>
+        <div class='row'>
+            <button type='submit' class='col btn waves-effect indigo'>Submit</button>
+        </div>
+        </form>
+      </div>
+</main>

@@ -1,49 +1,66 @@
-<h1><%= user.name %>'s Details</h1>
-<ul>
-    <li><b>Name: </b><%= user.name %></li>
-    <li><b>About: </b><%= user.bio === '' ? 'N/A' : user.bio %></li>
-    <li><b>Score: </b><%= user.totalScore %></li>
-    <li>
-        <b>Recipes:</b>
-        <ul>
-            <% user.recipes.forEach(recipe => { %>
-                <li>
-                    <a href="/recipes/<%= recipe._id %>"><%= recipe.name %></a>
-                    <span>&uparrow;<%= recipe.upvotes %></span>
-                    <span>&downarrow;<%= recipe.downvotes %></span>
-                </li>
-            <% }) %>
-        </ul>
-    </li>
-    <li>
-        <b>Likes:</b>
-        <ul>
-            <% user.upvotedRecipes.forEach(recipe => { %>
-                <li>
-                    <a href="/recipes/<%= recipe._id %>"><%= recipe.name %></a>
-                </li>
-            <% }) %>
-        </ul>
-    </li>
-    <li>
-        <b>Dislikes:</b>
-        <ul>
-            <% user.downvotedRecipes.forEach(recipe => { %>
-                <li>
-                    <a href="/recipes/<%= recipe._id %>"><%= recipe.name %></a>
-                </li>
-            <% }) %>
-        </ul>
-    </li>
-    <li>
-        <b>Comments:</b>
-        <ul>
-            <% user.comments.forEach(comm => { %>
-                <li>
-                    <a href="/recipes/<%= comm.commentedOn._id %>"><%= comm.commentedOn.name %></a><br>
-                    <i><%= comm.body %></i>
-                </li>
-            <% }) %>
-        </ul>
-    </li>
-</ul>
+<% layout('boilerplate')%>
+
+<main>
+    <div class="container">
+            <h2 class="recipe-headings"><%= user.name %>'s Details</h2>
+        <div class="row">
+            <div class="col s12 m6 bio">
+                <h5 class="recipe-headings">About</h5>
+                <p><%= user.bio === '' ? 'N/A' : user.bio %></p>
+            </div>
+            <div class="col s12 m6">
+                <h2 class="recipe-headings">
+                    <i class="material-icons medium">thumb_up</i>
+                    <%= user.upvotesRec %>
+                    <i class="material-icons medium">thumb_down</i>
+                    <%= user.downvotesRec %>
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m4">
+                <h5 class="recipe-headings">Recipes</h5>
+                <ul class="collection ing-list">
+                    <% user.recipes.forEach(recipe => { %>
+                        <li class="collection-item ing">
+                            <a href="/recipes/<%= recipe._id %>" style="margin-right: 1rem;"><%= recipe.name %></a>
+                            <span><i class="material-icons">thumb_up</i><%= recipe.upvotes %></span>
+                            <span><i class="material-icons">thumb_down</i><%= recipe.downvotes %></span>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+            <div class="col s12 m4">
+                <h5 class="recipe-headings">Likes</h5>
+                <ul class="collection ing-list">
+                    <% user.upvotedRecipes.forEach(recipe => { %>
+                        <li class="collection-item ing">
+                            <a href="/recipes/<%= recipe._id %>"><%= recipe.name %></a>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+            <div class="col s12 m4">
+                <h5 class="recipe-headings">Dislikes</h5>
+                <ul class="collection ing-list">
+                    <% user.downvotedRecipes.forEach(recipe => { %>
+                        <li class="collection-item ing">
+                            <a href="/recipes/<%= recipe._id %>"><%= recipe.name %></a>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <h5 class="recipe-headings">Comments</h5>
+            <ul class="collection ing-list">
+                <% user.comments.forEach(comm => { %>
+                    <li class="collection-item ing">
+                        <a href="/recipes/<%= comm.commentedOn._id %>"><%= comm.commentedOn.name %></a><br>
+                        <i><%= comm.body %></i>
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>        
+</main>

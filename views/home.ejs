@@ -1,9 +1,35 @@
-<h1>Hi</h1>
-
-<% if(currentUser) { %>
-    <h3><%= currentUser.name %></h3>
-    <a href="/users/logout">Logout</a>
-<% } else { %>
-    <a href="/users/login">Login</a>
-    <a href="/users/register">Register</a>
-<% } %>  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodBoard</title>
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a class="logo" href="/recipes"><h1>FoodBoard</h1></a>
+            <ul class="nav-links-list">
+                <li class="nav-link"><a href="/recipes">Recipes</a></li>
+                <% if (!currentUser) { %>
+                    <li class="nav-link"><a href="/users/login">Login</a></li>
+                    <li class="nav-link"><a href="/users/register">Register</a></li>
+                <% } %>
+                <% if (currentUser) { %>
+                    <li class="nav-link"><a href="/users/logout">Logout</a></li>
+                <% } %>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>FoodBoard</h1>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure eligendi id consequatur exercitationem molestiae voluptatum inventore quas, magnam architecto ipsam aut? Porro placeat nulla culpa!</p>
+        <a href="/recipes" class="hero-btn">Explore</a>
+    </main>
+    <footer>
+        &copy;2022 FoodBoard
+    </footer>
+</body>
+</html>
