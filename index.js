@@ -8,6 +8,7 @@ require('./config/passportConfig')(passport)
 const methodOverride = require('method-override')
 const MongoStore = require('connect-mongo')
 const engine = require('ejs-mate')
+const mongoSanitize = require('express-mongo-sanitize')
 
 const { connectDB } = require('./config/db')
 const DbError = require('./utils/DbError')
@@ -25,6 +26,7 @@ app.set('view engine', 'ejs')
 app.use(methodOverride('_method'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(mongoSanitize());
 
 const options = {
     mongoUrl: process.env.MONGO_URI,
